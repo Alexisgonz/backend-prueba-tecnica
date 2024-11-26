@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTareaDto } from './dto/create-tarea.dto';
 import { UpdateTareaDto } from './dto/update-tarea.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Tareas } from './entities/tarea.entity';
+import { Public } from 'src/decorators/is-public';
 
 @Injectable()
 export class TareasService {
+  constructor(
+    @InjectRepository(Tareas)
+    private repo: Repository<Tareas>,
+  ) {}
+
   create(createTareaDto: CreateTareaDto) {
-    return 'This action adds a new tarea';
+    return this.repo.save(createTareaDto);
   }
 
   findAll() {
-    return `This action returns all tareas`;
+    return this.repo.find({ order: { id: 'ASC' } });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} tarea`;
+    return this.repo.findOneBy({ id });
   }
 
   update(id: number, updateTareaDto: UpdateTareaDto) {
-    return `This action updates a #${id} tarea`;
+    return this.repo.update(id, updateTareaDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} tarea`;
+    return this.repo.delete(id);
   }
 }

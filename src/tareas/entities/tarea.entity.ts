@@ -1,7 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'tareas' })
-export class Tarea {
+export class Tareas {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -10,4 +17,19 @@ export class Tarea {
 
   @Column()
   descripcion: string;
+
+  @CreateDateColumn({
+    type: 'timestamptz',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamptz',
+  })
+  updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamptz',
+  })
+  deletedAt: Date;
 }
