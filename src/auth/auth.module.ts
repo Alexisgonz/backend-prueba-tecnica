@@ -1,4 +1,3 @@
-import { Type } from './../../node_modules/@nestjs/passport/dist/interfaces/type.interface.d';
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -27,4 +26,4 @@ import { Usuario } from 'src/usuarios/entities/usuario.entity';
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
 })
-export class AuthModule { }
+export class AuthModule {}

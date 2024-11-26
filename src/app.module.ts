@@ -26,4 +26,4 @@ import jwtConfig from 'config/jwt.config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
