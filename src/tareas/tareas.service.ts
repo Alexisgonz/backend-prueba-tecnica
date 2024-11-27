@@ -10,9 +10,7 @@ export class TareasService {
   constructor(
     @InjectRepository(Tareas)
     private repo: Repository<Tareas>,
-  ) {
-    // 
-  }
+  ) {}
 
   create(createTareaDto: CreateTareaDto) {
     return this.repo.save(createTareaDto);
