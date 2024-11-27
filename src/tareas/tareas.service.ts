@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTareaDto } from './dto/create-tarea.dto';
 import { UpdateTareaDto } from './dto/update-tarea.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Tareas } from './entities/tarea.entity';
-import { Public } from 'src/decorators/is-public';
 
 @Injectable()
 export class TareasService {
@@ -17,19 +16,52 @@ export class TareasService {
     return this.repo.save(createTareaDto);
   }
 
-  findAll() {
-    return this.repo.find({ order: { id: 'ASC' } });
+  findAll(id: number) {
+    return this.repo.find({
+      where: {
+        usuarioId: id,
+      },
+      order: { id: 'ASC' },
+    });
+  }
+
+  async getTareasPaginadas(page: number, limit: number, userId: number) {
+    const [result, total] = await this.repo.findAndCount({
+      where: { usuarioId: userId },
+      skip: page * limit,
+      take: limit,
+    });
+    return {
+      data: result,
+      totalItems: total,
+    };
   }
 
   findOne(id: number) {
-    return this.repo.findOneBy({ id });
+    return `This action returns a #${id} tarea`;
   }
 
-  update(id: number, updateTareaDto: UpdateTareaDto) {
-    return this.repo.update(id, updateTareaDto);
+  async update(id: number, updateTareaDto: UpdateTareaDto) {
+    const tarea = await this.repo.findOne({ where: { id } });
+
+    if (!tarea) {
+      throw new NotFoundException(`Tarea con ID ${id} no encontrada`);
+    }
+
+    Object.assign(tarea, updateTareaDto);
+
+    return await this.repo.save(tarea);
   }
 
-  remove(id: number) {
-    return this.repo.delete(id);
+  async remove(id: number): Promise<boolean> {
+    const tarea = await this.repo.findOne({ where: { id } });
+
+    if (!tarea) {
+      throw new Error(`Tarea con ID ${id} no encontrada`);
+    }
+
+    await this.repo.softRemove(tarea);
+
+    return true;
   }
 }

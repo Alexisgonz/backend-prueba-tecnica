@@ -1,8 +1,10 @@
+import { Usuario } from 'src/usuarios/entities/usuario.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -32,4 +34,12 @@ export class Tareas {
     type: 'timestamptz',
   })
   deletedAt: Date;
+
+  @Column()
+  usuarioId: number;
+
+  @ManyToOne(() => Usuario, (usuario) => usuario.tareas, {
+    onDelete: 'CASCADE',
+  })
+  usuario: Usuario;
 }
