@@ -35,7 +35,7 @@ export class Tareas {
   })
   deletedAt: Date;
 
-  @Column()
+  @Column({nullable: true})
   usuarioId: number;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.tareas, {

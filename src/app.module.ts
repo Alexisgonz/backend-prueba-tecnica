@@ -17,7 +17,7 @@ import { TareasModule } from './tareas/tareas.module';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'postgres',
+      password: 'Robo23.07',
       database: 'prueba_tecnica_db',
       entities: [Usuario, Tareas],
       synchronize: true,
