@@ -30,6 +30,7 @@ export class TareasService {
   async getTareasPaginadas(page: number, limit: number, userId: number) {
     const [result, total] = await this.repo.findAndCount({
       where: { usuarioId: userId },
+      order: { createdAt: 'DESC' },
       skip: page * limit,
       take: limit,
     });
